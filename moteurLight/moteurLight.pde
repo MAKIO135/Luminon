@@ -1,3 +1,9 @@
+/*
+	Touches 0-9: displayMode[0-9]
+	Touche [+]: displayMode suivant
+	Touche [-]: displayMode précédent
+	Touche [SPACE]: displayMode aléatoire
+*/
 import oscP5.*;
 import netP5.*;
 
@@ -10,8 +16,8 @@ final int MARGE = 50;
 
 Panneau[] pnx;
 
-int nbModes = 20;
-int displayMode = 11;
+int nbModes = 19;
+int displayMode = 0;
 float w, h, hLed;
 PGraphics left, right;
 int pw, ph;//PGraphics width / height
@@ -52,7 +58,10 @@ void draw() {
 	}
 
 	sendOsc();
-	// if(frameCount%500 == 0) displayMode = int(random(nbModes));
+	if(frameCount%1200 == 0){
+		displayMode = int(random(nbModes));
+		println("displayMode: "+displayMode);
+	}
 }
 
 void sendOsc() {
@@ -60,7 +69,7 @@ void sendOsc() {
 		OscMessage myMessage = new OscMessage("/Pano"+(i+1));
 		myMessage.add(pnx[i].ledTar);
 		oscP5.send(myMessage, myRemoteLocation);
-		println("myMessage: "+ myMessage);
+		// println("myMessage: "+ myMessage);
 	}
 }
 
@@ -72,6 +81,9 @@ void keyPressed() {
 	else if(key == '-'){
 		displayMode--;
 		displayMode = constrain(displayMode, 0, nbModes);
+	}
+	else if (key == ' ') {
+		displayMode = int(random(nbModes));
 	}
 	else{
 		try {
