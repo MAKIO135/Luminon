@@ -67,7 +67,7 @@ void draw() {
 void sendOsc() {
 	for (int i=0, len=pnx.length; i<len; i++) {
 		OscMessage myMessage = new OscMessage("/Pano"+(i+1));
-		myMessage.add(pnx[i].ledTar);
+		myMessage.add(pnx[i].led);
 		oscP5.send(myMessage, myRemoteLocation);
 		// println("myMessage: "+ myMessage);
 	}
