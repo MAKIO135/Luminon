@@ -1,21 +1,9 @@
-/////////////////////////////////////////////////////////////////////////////
-/*$(window).resize(function() {
- 		setSize(window.innerWidth, window.innerHeight);
- 	});*/
-
-void setup() {
-    //setSize(window.innerWidth, window.innerHeight);
-    size(1000, 800);
-    initialize();
-    frameRate(20);
-}
-
-/*void setSize(int newWidth, int newHeight){
- 		size(newWidth, newHeight);
- 		initialize();
- 	}*/
-/////////////////////////////////////////////////////////////////////////////
-
+/*
+	Touches 0-9: displayMode[0-9]
+	Touche [+]: displayMode suivant
+	Touche [-]: displayMode précédent
+	Touche [SPACE]: displayMode aléatoire
+*/
 import oscP5.*;
 import netP5.*;
 
@@ -28,104 +16,89 @@ final int MARGE = 50;
 
 Panneau[] pnx;
 
+int nbModes = 19;
 int displayMode = 0;
 float w, h, hLed;
+PGraphics left, right;
+int pw, ph;//PGraphics width / height
 
-void initialize() {
-    w = int(width/NB_PNX_WALL);
-    h = (height-MARGE)/2;
-    hLed = h/NB_LEDSTRIPS;
+void setup() {
+	size(600, 400);
+	frameRate(20);
+	noStroke();
 
-    pnx = new Panneau[NB_PNX_WALL*2];
-    // console.log("pnx.length: "+pnx.length);
-    for (int i=0, len=pnx.length; i<len; i++) {
-        pnx[i] = new Panneau(i);
-    }
+	w = int(width/NB_PNX_WALL);
+	h = (height-MARGE)/2;
+	hLed = h/NB_LEDSTRIPS;
+	
+	pnx = new Panneau[NB_PNX_WALL*2];
+	// console.log("pnx.length: "+pnx.length);
+	for (int i=0, len=pnx.length; i<len; i++) {
+		pnx[i] = new Panneau(i);
+	}
 
-    noStroke();
+	left = createGraphics(NB_PNX_WALL, NB_LEDSTRIPS, P2D);
+	right = createGraphics(NB_PNX_WALL, NB_LEDSTRIPS, P2D);
+	pw = NB_PNX_WALL;
+	ph = NB_LEDSTRIPS;
 
-    oscP5 = new OscP5(this, 3008);
-    myRemoteLocation = new NetAddress("192.168.0.19", 3007);
-    //myRemoteLocation = new NetAddress("127.0.0.1", 3007);
+	// OSC Communication
+	oscP5 = new OscP5(this, 3008);
+	myRemoteLocation = new NetAddress("127.0.0.1", 3007);
 }
 
 void draw() {
-    background(0);
+	background(0);
+	updateGraphics();
+	// image(left,0,0,width,height/2);
+	// image(right,0,height/2,width,height/2);
 
-    for (int i=0, len=pnx.length; i<len; i++) {
-        pnx[i].draw();
-    }
-    sendOsc();
+	for (int i=0, len=pnx.length; i<len; i++) {
+		pnx[i].draw();
+	}
+
+	sendOsc();
+	if(frameCount%1200 == 0){
+		displayMode = int(random(nbModes));
+		println("displayMode: "+displayMode);
+	}
 }
 
 void sendOsc() {
-    for (int i=0, len=pnx.length; i<len; i++) {
-        OscMessage myMessage = new OscMessage("/Pano"+(i+1));
-        myMessage.add(pnx[i].ledTar);
-        oscP5.send(myMessage, myRemoteLocation);
-    }
+	for (int i=0, len=pnx.length; i<len; i++) {
+		OscMessage myMessage = new OscMessage("/Pano"+(i+1));
+		myMessage.add(pnx[i].led);
+		oscP5.send(myMessage, myRemoteLocation);
+		// println("myMessage: "+ myMessage);
+	}
 }
 
 void keyPressed() {
-    if (key=='1') {
-        displayMode = 1;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='2') {
-        displayMode = 2;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='3') {
-        displayMode = 3;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='4') {
-        displayMode = 4;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='5') {
-        displayMode = 5;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='6') {
-        displayMode = 6;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='7') {
-        displayMode = 7;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='8') {
-        displayMode = 8;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    else if (key=='9') {
-        displayMode = 9;
-        for (int i=0, len=pnx.length; i<len; i++) {
-            pnx[i].initUpdate = true;
-        }
-    }
-    /*else if(key=='10'){
-     		displayMode = 10;
-     		for (int i=0, len=pnx.length; i<len; i++){
-     			pnx[i] .initUpdate = true;
-     		}
-     	}*/
+	if(key == '+'){
+		displayMode++;
+		displayMode = constrain(displayMode, 0, nbModes);
+	}
+	else if(key == '-'){
+		displayMode--;
+		displayMode = constrain(displayMode, 0, nbModes);
+	}
+	else if (key == ' ') {
+		displayMode = int(random(nbModes));
+	}
+	else{
+		try {
+			String s = "";
+			s+=key;
+			// println("key: "+Integer.parseInt(s));
+			displayMode = Integer.parseInt(s);
+			for (int i=0, len=pnx.length; i<len; i++) {
+				pnx[i].initUpdate = true;
+			}
+		}
+		catch (Exception e) {
+			// println("e: "+e);
+			// println("key: "+int(key));
+		}
+	}
+	println("displayMode: "+displayMode);
 }
-
