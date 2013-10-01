@@ -1,4 +1,9 @@
 /*
+	TODO:
+	-BeatListener
+*/
+
+/*
 	Touches 0-9: displayMode[0-9]
 	Touche [+]: displayMode suivant
 	Touche [-]: displayMode précédent
@@ -10,20 +15,25 @@ import netP5.*;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 
-final int NB_PNX_WALL = 6;
-final int NB_LEDSTRIPS = 27;
-final int MARGE = 50;
+boolean DEBUG = true;
+
+final int NB_PNX_WALL = 5;
+final int NB_LEDSTRIPS = 20;
+
+// Spatialisation son
+final int[] group1 = {0,NB_PNX_WALL};
+final int[] group2 = {NB_PNX_WALL/2,NB_PNX_WALL+NB_PNX_WALL/2};
+final int[] group3 = {NB_PNX_WALL-1,NB_PNX_WALL*2-1};
+
+final int MARGE = 20;
 
 Panneau[] pnx;
-
-int nbModes = 19;
-int displayMode = 0;
 float w, h, hLed;
 PGraphics left, right;
 int pw, ph;//PGraphics width / height
 
 void setup() {
-	size(600, 400);
+	size(300, 200);
 	frameRate(20);
 	noStroke();
 
@@ -45,23 +55,28 @@ void setup() {
 	// OSC Communication
 	oscP5 = new OscP5(this, 3008);
 	myRemoteLocation = new NetAddress("127.0.0.1", 3007);
+
+	println("");
 }
 
 void draw() {
-	background(0);
 	updateGraphics();
-	// image(left,0,0,width,height/2);
-	// image(right,0,height/2,width,height/2);
-
 	for (int i=0, len=pnx.length; i<len; i++) {
-		pnx[i].draw();
+		pnx[i].update();
+	}
+
+	if(DEBUG){
+		background(0);
+		for (int i=0, len=pnx.length; i<len; i++) {
+			pnx[i].draw();
+		}
 	}
 
 	sendOsc();
-	if(frameCount%1200 == 0){
+	/*if(frameCount%1200 == 0){
 		displayMode = int(random(nbModes));
 		println("displayMode: "+displayMode);
-	}
+	}*/
 }
 
 void sendOsc() {
@@ -71,6 +86,42 @@ void sendOsc() {
 		oscP5.send(myMessage, myRemoteLocation);
 		// println("myMessage: "+ myMessage);
 	}
+
+	int average1 = 0;
+	for (int i = 0; i<group1.length; i++){
+		for (int j = 0; j<NB_LEDSTRIPS; j++){
+			average1 += pnx[group1[i]].led[j];
+		}
+	}
+	average1 = int(average1/(group1.length*NB_LEDSTRIPS));
+	// println("average1: "+average1);
+	OscMessage mess1 = new OscMessage("/group1");
+	mess1.add(average1);
+	oscP5.send(mess1, myRemoteLocation);
+
+	int average2 = 0;
+	for (int i = 0; i<group2.length; i++){
+		for (int j = 0; j<NB_LEDSTRIPS; j++){
+			average2 += pnx[group2[i]].led[j];
+		}
+	}
+	average2 = int(average2/(group2.length*NB_LEDSTRIPS));
+	// println("average2: "+average2);
+	OscMessage mess2 = new OscMessage("/group2");
+	mess2.add(average2);
+	oscP5.send(mess2, myRemoteLocation);
+
+	int average3 = 0;
+	for (int i = 0; i<group3.length; i++){
+		for (int j = 0; j<NB_LEDSTRIPS; j++){
+			average3 += pnx[group3[i]].led[j];
+		}
+	}
+	average3 = int(average3/(group3.length*NB_LEDSTRIPS));
+	// println("average3: "+average3);
+	OscMessage mess3 = new OscMessage("/group3");
+	mess3.add(average3);
+	oscP5.send(mess3, myRemoteLocation);
 }
 
 void keyPressed() {
@@ -85,7 +136,13 @@ void keyPressed() {
 	else if (key == ' ') {
 		displayMode = int(random(nbModes));
 	}
-	else{
+	else if (key=='d' || key =='D') {
+		DEBUG = !DEBUG;
+	}
+	else if (key=='0') {
+		frameCount = base;
+	}
+	/*else{
 		try {
 			String s = "";
 			s+=key;
@@ -99,6 +156,6 @@ void keyPressed() {
 			// println("e: "+e);
 			// println("key: "+int(key));
 		}
-	}
+	}*/
 	println("displayMode: "+displayMode);
 }

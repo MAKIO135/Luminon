@@ -1,4 +1,6 @@
-float base = 30.; //rythme à augmenter ou ralentir
+int displayMode = 10;
+int base = 40; //rythme à augmenter ou ralentir
+
 void updateGraphics(){
 	// respiration background
 	if(displayMode == 0){
@@ -12,10 +14,9 @@ void updateGraphics(){
 	}
 
 	// respiration ellipse
-	
 	else if(displayMode == 1){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -30,7 +31,7 @@ void updateGraphics(){
 	// respiration verticale
 	else if(displayMode == 2){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -45,7 +46,7 @@ void updateGraphics(){
 	// k2000 vertical
 	else if(displayMode == 3){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -61,7 +62,7 @@ void updateGraphics(){
 	// k2000 horizontal
 	else if(displayMode == 4){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -69,7 +70,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255,150);
@@ -79,7 +80,7 @@ void updateGraphics(){
 
 	else if(displayMode == 5){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -88,7 +89,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255,150);
@@ -99,7 +100,7 @@ void updateGraphics(){
 
 	else if(displayMode == 6){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
@@ -109,7 +110,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
@@ -121,7 +122,7 @@ void updateGraphics(){
 
 	else if(displayMode == 7){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
@@ -132,7 +133,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
@@ -144,7 +145,7 @@ void updateGraphics(){
 
 	else if(displayMode == 8){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
@@ -155,7 +156,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
@@ -167,7 +168,7 @@ void updateGraphics(){
 
 	else if(displayMode == 9){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
@@ -178,7 +179,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
@@ -190,11 +191,11 @@ void updateGraphics(){
 
 	else if(displayMode == 10){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
-		if(frameCount%10==0){
+		if(frameCount%base/2==0){
 			for(int i=0;i<3;i++){
 				left.rect(int(random(pw)),int(random(ph)),2,2);
 			}
@@ -202,11 +203,11 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
-		if(frameCount%10==0){
+		if(frameCount%base/2==0){
 			for(int i=0;i<3;i++) {
 				right.rect(int(random(pw)),int(random(ph)),2,2);
 			}
@@ -216,13 +217,13 @@ void updateGraphics(){
 
 	else if(displayMode == 11){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 
 		left.stroke(255);
-		left.point(frameCount%pw,frameCount/int(pw)%ph);
-		left.point(frameCount%pw,(frameCount/int(pw)+ph/2)%ph);
+		left.point(frameCount/5%pw,frameCount/5/int(pw)%ph);
+		left.point(frameCount/5%pw,(frameCount/5/int(pw)+ph/2)%ph);
 		left.endDraw();
 
 		right.beginDraw();
@@ -232,7 +233,7 @@ void updateGraphics(){
 
 	else if(displayMode == 12){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
@@ -249,10 +250,14 @@ void updateGraphics(){
 
 	else if(displayMode == 13){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
+
+		left.fill(255);
+		for (int i = 0; i<pw; i++){
+			left.rect(i,int(abs(cos(radians(i*30+frameCount)))*(NB_LEDSTRIPS-2)),1,2);
+		}
 		left.endDraw();
 
 		right.beginDraw();
@@ -262,10 +267,14 @@ void updateGraphics(){
 
 	else if(displayMode == 14){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
+
+		left.fill(255);
+		for (int i = 0; i<pw; i++){
+			left.rect(i,0,1,int(map(cos(radians(i*90+frameCount)),-1,1,0,1)*(NB_LEDSTRIPS-1)));
+		}
 		left.endDraw();
 
 		right.beginDraw();
@@ -275,36 +284,15 @@ void updateGraphics(){
 
 	else if(displayMode == 15){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
-		left.endDraw();
 
-		right.beginDraw();
-		right.image(left,0,0);
-		right.endDraw();
-	}
-
-	else if(displayMode == 16){
-		left.beginDraw();
-		left.fill(0,10);
-		left.noStroke();
-		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
-		left.endDraw();
-
-		right.beginDraw();
-		right.image(left,0,0);
-		right.endDraw();
-	}
-
-	else if(displayMode == 17){
-		left.beginDraw();
-		left.fill(0,10);
-		left.noStroke();
-		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
+		left.fill(255);
+		for (int i = 0; i<pw; i++){
+			left.rect(i,int(abs(cos(radians(i*30+frameCount)))*(NB_LEDSTRIPS-2)),1,2);
+			left.rect(i,NB_LEDSTRIPS-2-int(abs(cos(radians(i*30+frameCount)))*(NB_LEDSTRIPS-2)),1,2);
+		}
 		left.endDraw();
 
 		right.beginDraw();
@@ -313,9 +301,9 @@ void updateGraphics(){
 	}
 
 	// noise 3d  (x,y,temps)
-	else if(displayMode == 18){
+	else if(displayMode == 16){
 		left.beginDraw();
-		left.fill(0,10);
+		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		for (int i = 0; i<pw; i++){
@@ -327,7 +315,7 @@ void updateGraphics(){
 		left.endDraw();
 
 		right.beginDraw();
-		right.fill(0,10);
+		right.fill(0,30);
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		for (int i = 0; i<pw; i++){
@@ -336,6 +324,19 @@ void updateGraphics(){
 				right.point(i,j);
 			}
 		}
+		right.endDraw();
+	}
+
+	else if(displayMode == 19){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+		left.background(frameCount%255);
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
 		right.endDraw();
 	}
 }

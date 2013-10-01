@@ -20,10 +20,15 @@ class Panneau{
 		}
 	}
 
-	void draw(){
+	void update(){
 		for(int i=0; i<NB_LEDSTRIPS; i++){
 			led[i] = id<NB_PNX_WALL? left.get(id%NB_PNX_WALL,i) : right.get(id%NB_PNX_WALL,i);
 			led[i] = int(brightness(led[i]));
+		}
+	}
+
+	void draw(){
+		for(int i=0; i<NB_LEDSTRIPS; i++){
 			fill(led[i]);
 			rect(posX, posY+i*hLed, w, hLed);
 		}
