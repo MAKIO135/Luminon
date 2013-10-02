@@ -1,11 +1,12 @@
-int displayMode = 10;
+int displayMode = 16;
+int nbModes = 19;
 int base = 40; //rythme à augmenter ou ralentir
 
 void updateGraphics(){
 	// respiration background
 	if(displayMode == 0){
 		left.beginDraw();
-		left.background(abs(cos(frameCount/base))*255);
+		left.background(abs(sin(radians(frameCount)))*255);
 		left.endDraw();
 
 		right.beginDraw();
@@ -20,7 +21,7 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
-		left.ellipse(pw/2,ph/2,sin(frameCount/base)*ph,sin(frameCount/base)*ph);
+		left.ellipse(pw/2.,ph/2.,sin(radians(frameCount))*ph,sin(radians(frameCount))*ph);
 		left.endDraw();
 
 		right.beginDraw();
@@ -35,7 +36,7 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
-		left.rect(0,ph-abs(sin(frameCount/base))*ph,pw,ph);
+		left.rect(0,ph-abs(sin(radians(frameCount)))*ph,pw,ph);
 		left.endDraw();
 
 		right.beginDraw();
@@ -50,8 +51,8 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
-		left.rect(0,abs(sin(frameCount/base))*ph-1,pw,2);
-		left.rect(0,ph-abs(sin(frameCount/base))*ph-1,pw,2);
+		left.rect(0,abs(sin(radians(frameCount)))*(ph-1),pw,2);
+		left.rect(0,ph-abs(sin(radians(frameCount)))*(ph-1),pw,2);
 		left.endDraw();
 
 		right.beginDraw();
@@ -66,7 +67,7 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
-		left.rect(abs(sin(frameCount/base))*(pw+1)-1,0,2,ph);
+		left.rect(abs(sin(radians(frameCount)))*(pw+1)-1,0,2,ph);
 		left.endDraw();
 
 		right.beginDraw();
@@ -74,7 +75,7 @@ void updateGraphics(){
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255,150);
-		right.rect(pw-(abs(sin(frameCount/base))*(pw+1)),0,2,ph);
+		right.rect(pw-(abs(sin(radians(frameCount)))*(pw+1)),0,2,ph);
 		right.endDraw();
 	}
 
@@ -84,8 +85,8 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255,150);
-		left.rect(abs(sin(frameCount/base))*(pw+1)-1,0,2,ph/2);
-		left.rect(pw-(abs(sin(frameCount/base))*(pw+1)),ph/2,2,ph/2);
+		left.rect(abs(sin(radians(frameCount)))*(pw+1)-1,0,2,ph/2);
+		left.rect(pw-(abs(sin(radians(frameCount)))*(pw+1)),ph/2,2,ph/2);
 		left.endDraw();
 
 		right.beginDraw();
@@ -93,8 +94,8 @@ void updateGraphics(){
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255,150);
-		right.rect(abs(sin(frameCount/base))*(pw+1)-1,ph/2,2,ph/2);
-		right.rect(pw-(abs(sin(frameCount/base))*(pw+1)),0,2,ph/2);
+		right.rect(abs(sin(radians(frameCount)))*(pw+1)-1,ph/2,2,ph/2);
+		right.rect(pw-(abs(sin(radians(frameCount)))*(pw+1)),0,2,ph/2);
 		right.endDraw();
 	}
 
@@ -104,7 +105,7 @@ void updateGraphics(){
 		left.noStroke();
 		left.rect(0,0,pw,ph);
 		left.fill(255);
-		float x = abs(sin(frameCount/base))*pw;
+		float x = abs(sin(radians(frameCount)))*pw;
 		left.rect(x,0,1,ph);
 		left.rect(pw-x,0,1,ph);
 		left.endDraw();
@@ -114,7 +115,7 @@ void updateGraphics(){
 		right.noStroke();
 		right.rect(0,0,pw,ph);
 		right.fill(255);
-		x = abs(sin((frameCount+90)/base))*(pw);
+		x = abs(sin(radians(frameCount+90)))*(pw);
 		right.rect(x,0,1,ph);
 		right.rect(pw-x,0,1,ph);
 		right.endDraw();
@@ -222,8 +223,8 @@ void updateGraphics(){
 		left.rect(0,0,pw,ph);
 
 		left.stroke(255);
-		left.point(frameCount/5%pw,frameCount/5/int(pw)%ph);
-		left.point(frameCount/5%pw,(frameCount/5/int(pw)+ph/2)%ph);
+		left.rect(frameCount/5%pw,frameCount/5/int(pw)%ph,1,3);
+		left.rect(frameCount/5%pw,(frameCount/5/int(pw)+ph/2)%ph,1,3);
 		left.endDraw();
 
 		right.beginDraw();
@@ -236,10 +237,10 @@ void updateGraphics(){
 		left.fill(0,30);
 		left.noStroke();
 		left.rect(0,0,pw,ph);
-		left.fill(255,150);
+		left.fill(255);
 		for (int i = 0; i<ph; i++){
-			if(i%2==0) left.rect(abs(sin(frameCount/base))*pw,i,1,1);
-			else left.rect(pw-(abs(sin(frameCount/base))*pw),i,1,1);
+			if(i%2==0) left.rect(abs(sin(radians(frameCount)))*pw,i,1,1);
+			else left.rect(pw-(abs(sin(radians(frameCount)))*pw),i,1,1);
 		}
 		left.endDraw();
 
@@ -300,8 +301,75 @@ void updateGraphics(){
 		right.endDraw();
 	}
 
-	// noise 3d  (x,y,temps)
 	else if(displayMode == 16){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+		left.fill(255);
+		left.rect(frameCount/10%pw,sin(radians(frameCount))*(ph-2),1,2);
+		left.rect((frameCount/10+2)%pw,sin(radians(frameCount+120))*(ph-2),1,2);
+		left.rect((frameCount/10+4)%pw,sin(radians(frameCount+60))*(ph-2),1,2);
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
+		right.endDraw();
+	}
+
+	else if(displayMode == 17){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+
+		left.fill(255);
+		for (int i = 0; i<pw; i++){
+			if(i%2==0) left.rect(i,ph,1,-int(map(cos(radians(i*90+frameCount*2)),-1,1,0,1)*(NB_LEDSTRIPS-1)));
+			else left.rect(i,0,1,int(map(cos(radians(i*90+frameCount*2)),-1,1,0,1)*(NB_LEDSTRIPS-1)));
+		}
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
+		right.endDraw();
+	}
+
+	else if(displayMode == 18){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+
+		left.stroke(255);
+		left.rect(frameCount/5%pw,frameCount/5%ph,1,3);
+		left.rect(frameCount/5%pw,(frameCount/5+ph/2)%ph,1,3);
+		left.rect((pw-2-frameCount/5)%pw,frameCount/5%ph,1,3);
+		left.rect((pw-2-frameCount/5)%pw,(frameCount/5+ph/2)%ph,1,3);
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
+		right.endDraw();
+	}
+
+
+
+	else if(displayMode == 999){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+		left.background(frameCount%255);
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
+		right.endDraw();
+	}
+
+	// noise 3d  (x,y,temps)
+	else if(displayMode == 1000){
 		left.beginDraw();
 		left.fill(0,30);
 		left.noStroke();
@@ -324,19 +392,6 @@ void updateGraphics(){
 				right.point(i,j);
 			}
 		}
-		right.endDraw();
-	}
-
-	else if(displayMode == 19){
-		left.beginDraw();
-		left.fill(0,30);
-		left.noStroke();
-		left.rect(0,0,pw,ph);
-		left.background(frameCount%255);
-		left.endDraw();
-
-		right.beginDraw();
-		right.image(left,0,0);
 		right.endDraw();
 	}
 }

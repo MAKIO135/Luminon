@@ -1,9 +1,10 @@
 /*
-	TODO:
-	-BeatListener
-*/
+		__	__  ____  ________   ______  _   __
+	   / /   / / / /  |/  /  _/ | / / __ \/ | / /
+	  / /   / / / / /|_/ // //  |/ / / / /  |/ / 
+	 / /___/ /_/ / /  / // // /|  / /_/ / /|  /  
+	/_____/\____/_/  /_/___/_/ |_/\____/_/ |_/   
 
-/*
 	Touches 0-9: displayMode[0-9]
 	Touche [+]: displayMode suivant
 	Touche [-]: displayMode précédent
@@ -11,6 +12,8 @@
 */
 import oscP5.*;
 import netP5.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
 
 OscP5 oscP5;
 NetAddress myRemoteLocation;
@@ -21,12 +24,16 @@ final int NB_PNX_WALL = 5;
 final int NB_LEDSTRIPS = 20;
 
 // Spatialisation son
-final int[] group1 = {0,NB_PNX_WALL};
+final int[] group1 = {0, 1, NB_PNX_WALL, NB_PNX_WALL+1};
 final int[] group2 = {NB_PNX_WALL/2,NB_PNX_WALL+NB_PNX_WALL/2};
-final int[] group3 = {NB_PNX_WALL-1,NB_PNX_WALL*2-1};
+final int[] group3 = {NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1};
+
+// Beat Detection
+Minim minim;
+AudioInput in;
+BeatDetect beat;
 
 final int MARGE = 20;
-
 Panneau[] pnx;
 float w, h, hLed;
 PGraphics left, right;
@@ -56,10 +63,23 @@ void setup() {
 	oscP5 = new OscP5(this, 3008);
 	myRemoteLocation = new NetAddress("127.0.0.1", 3007);
 
-	println("");
+	// Beat Detection
+	minim = new Minim(this);
+	minim.debugOn();
+	// get a line in from Minim, default bit depth is 16
+	in = minim.getLineIn(Minim.STEREO, int(1024));
+	// a beat detection object song SOUND_ENERGY mode with a sensitivity of 10 milliseconds
+	beat = new BeatDetect();
+	beat.setSensitivity(100);
+	// beat.detectMode(BeatDetect.FREQ_ENERGY);
 }
 
 void draw() {
+	beat.detect(in.mix);
+	if ( beat.isOnset() ){
+		frameCount = 0;
+	}
+
 	updateGraphics();
 	for (int i=0, len=pnx.length; i<len; i++) {
 		pnx[i].update();
@@ -67,9 +87,17 @@ void draw() {
 
 	if(DEBUG){
 		background(0);
+		if ( beat.isOnset() ){
+			fill(255,0,0);
+			rect(0,h,width,MARGE);
+		}
+		beat.drawGraph(this);
+		
 		for (int i=0, len=pnx.length; i<len; i++) {
+			noStroke();
 			pnx[i].draw();
 		}
+
 	}
 
 	sendOsc();
@@ -158,4 +186,10 @@ void keyPressed() {
 		}
 	}*/
 	println("displayMode: "+displayMode);
+}
+
+void stop() {
+	in.close();
+	minim.stop();
+	super.stop();
 }
