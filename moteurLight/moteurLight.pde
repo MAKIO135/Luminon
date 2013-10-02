@@ -1,11 +1,10 @@
 /*
-		__	__  ____  ________   ______  _   __
+	    __    __  ____  ________   ______  _   __
 	   / /   / / / /  |/  /  _/ | / / __ \/ | / /
 	  / /   / / / / /|_/ // //  |/ / / / /  |/ / 
 	 / /___/ /_/ / /  / // // /|  / /_/ / /|  /  
 	/_____/\____/_/  /_/___/_/ |_/\____/_/ |_/   
 
-	Touches 0-9: displayMode[0-9]
 	Touche [+]: displayMode suivant
 	Touche [-]: displayMode précédent
 	Touche [SPACE]: displayMode aléatoire
@@ -25,7 +24,7 @@ final int NB_LEDSTRIPS = 20;
 
 // Spatialisation son
 final int[] group1 = {0, 1, NB_PNX_WALL, NB_PNX_WALL+1};
-final int[] group2 = {NB_PNX_WALL/2,NB_PNX_WALL+NB_PNX_WALL/2};
+final int[] group2 = {1,2,3,6,7,8};
 final int[] group3 = {NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1};
 
 // Beat Detection
