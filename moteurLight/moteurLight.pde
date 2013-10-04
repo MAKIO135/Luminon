@@ -29,8 +29,8 @@ final int NB_LEDSTRIPS = 20;
 final int[] group1 = { 0, 1, NB_PNX_WALL, NB_PNX_WALL+1 };
 final int[] group2 = { 1,2,3,6,7,8 };
 final int[] group3 = { NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1 };
-int moy1, moy2, moy3;
-float easingMoySon = 0.1;
+// int moy1, moy2, moy3;
+// float easingMoySon = 0.1;
 
 // Beat Detection
 Minim minim;
@@ -131,7 +131,7 @@ void sendOsc() {
 		}
 	}
 	average1 = int(average1/(group1.length*NB_LEDSTRIPS));
-	moy1 = (int) ease(moy1, average1, easingMoySon);
+	// moy1 = (int) ease(moy1, average1, easingMoySon);
 	// println("average1: "+average1);
 	OscMessage mess1 = new OscMessage("/group1");
 	mess1.add(average1);
@@ -144,7 +144,7 @@ void sendOsc() {
 		}
 	}
 	average2 = int(average2/(group2.length*NB_LEDSTRIPS));
-	moy2 = (int) ease(moy2, average2, easingMoySon);
+	// moy2 = (int) ease(moy2, average2, easingMoySon);
 	// println("average2: "+average2);
 	OscMessage mess2 = new OscMessage("/group2");
 	mess2.add(average2);
@@ -157,7 +157,7 @@ void sendOsc() {
 		}
 	}
 	average3 = int(average3/(group3.length*NB_LEDSTRIPS));
-	moy3 = (int)ease(moy3, average3, easingMoySon);
+	// moy3 = (int)ease(moy3, average3, easingMoySon);
 	// println("average3: "+average3);
 	OscMessage mess3 = new OscMessage("/group3");
 	mess3.add(average3);
@@ -244,7 +244,6 @@ void stop() {
 	minim.stop();
 	super.stop();
 }
-
 
 float ease(float variable,float target,float easingVal) {
 	float d = target - variable;
