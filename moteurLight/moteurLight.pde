@@ -8,6 +8,8 @@
 	Touche [+]: displayMode suivant
 	Touche [-]: displayMode précédent
 	Touche [SPACE]: displayMode aléatoire
+	Touche [a]: manual start
+	Touche [z]: manual stop
 */
 import oscP5.*;
 import netP5.*;
