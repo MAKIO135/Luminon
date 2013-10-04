@@ -72,7 +72,7 @@ void setup() {
 	in = minim.getLineIn(Minim.STEREO, int(1024));
 	// a beat detection object song SOUND_ENERGY mode with a sensitivity of 10 milliseconds
 	beat = new BeatDetect();
-	beat.setSensitivity(100);
+	beat.setSensitivity(2500);
 	// beat.detectMode(BeatDetect.FREQ_ENERGY);
 }
 
