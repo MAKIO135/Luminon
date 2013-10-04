@@ -32,6 +32,7 @@ Minim minim;
 AudioInput in;
 BeatDetect beat;
 int startTime = 0;
+int track = 1;
 
 final int MARGE = 20;
 Panneau[] pnx;
@@ -102,14 +103,13 @@ void draw() {
 	}
 
 	sendOsc();
-	if(second()%30 == 0 && once){
+	if(millis()-startTime > 100000){
 		displayMode = int(random(nbModes));
 		println("displayMode: "+displayMode);
-		once=false;
+		startTime = millis();
 	}
-	if(second()%30==29) once= true;
 }
-boolean once = true;
+
 void sendOsc() {
 	for (int i=0, len=pnx.length; i<len; i++) {
 		OscMessage myMessage = new OscMessage("/Pano"+(i+1));
@@ -157,25 +157,42 @@ void sendOsc() {
 
 void oscEvent(OscMessage messageEntrant) {
 	println(messageEntrant.toString());
-	if (messageEntrant.addrPattern().equals("/track") == true) {
-		if (messageEntrant.typetag().equals("i") == true) {
-	// 		mouse_x = messageEntrant.get(0).intValue();
-	// 		mouse_y = messageEntrant.get(1).intValue();
-		}
+	if (messageEntrant.addrPattern().equals("/play") == true) {
+		displayMode = 0;
+		startTime = millis();
+		fill(0,255,0);
+		rect(0,h,width,MARGE);
+		// if (messageEntrant.typetag().equals("i") == true) {
+			// mouse_x = messageEntrant.get(0).intValue();
+			// mouse_y = messageEntrant.get(1).intValue();
+		// }
+	}
+	else if (messageEntrant.addrPattern().equals("/stop") == true) {
+		displayMode = 1000;
+		startTime = millis();
+		fill(255,255,0);
+		rect(0,h,width,MARGE);
+		// if (messageEntrant.typetag().equals("i") == true) {
+			// mouse_x = messageEntrant.get(0).intValue();
+			// mouse_y = messageEntrant.get(1).intValue();
+		// }
 	}
 }
 
 void keyPressed() {
 	if(key == '+'){
 		displayMode++;
+		startTime = millis();
 		displayMode = constrain(displayMode, 0, nbModes);
 	}
 	else if(key == '-'){
 		displayMode--;
+		startTime = millis();
 		displayMode = constrain(displayMode, 0, nbModes);
 	}
 	else if (key == ' ') {
 		displayMode = int(random(nbModes));
+		startTime = millis();
 	}
 	else if (key=='d' || key =='D') {
 		DEBUG = !DEBUG;

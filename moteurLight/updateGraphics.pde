@@ -1,4 +1,4 @@
-int displayMode = 19;
+int displayMode = 0;
 int nbModes = 20;
 int base = 40; //rythme à augmenter ou ralentir
 
