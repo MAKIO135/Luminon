@@ -131,7 +131,7 @@ void sendOsc() {
 		}
 	}
 	average1 = int(average1/(group1.length*NB_LEDSTRIPS));
-	moy1 = ease(moy1, average1, easingMoySon);
+	moy1 = (int) ease(moy1, average1, easingMoySon);
 	// println("average1: "+average1);
 	OscMessage mess1 = new OscMessage("/group1");
 	mess1.add(average1);
@@ -144,7 +144,7 @@ void sendOsc() {
 		}
 	}
 	average2 = int(average2/(group2.length*NB_LEDSTRIPS));
-	moy2 = ease(moy2, average2, easingMoySon);
+	moy2 = (int) ease(moy2, average2, easingMoySon);
 	// println("average2: "+average2);
 	OscMessage mess2 = new OscMessage("/group2");
 	mess2.add(average2);
@@ -157,7 +157,7 @@ void sendOsc() {
 		}
 	}
 	average3 = int(average3/(group3.length*NB_LEDSTRIPS));
-	moy3 = ease(moy3, average3, easingMoySon);
+	moy3 = (int)ease(moy3, average3, easingMoySon);
 	// println("average3: "+average3);
 	OscMessage mess3 = new OscMessage("/group3");
 	mess3.add(average3);
