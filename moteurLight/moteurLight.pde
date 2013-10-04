@@ -42,6 +42,7 @@ int pw, ph;//PGraphics width / height
 
 void setup() {
 	size(300, 200);
+	frame.setAlwaysOnTop(true);
 	// size(screen.width+1, screen.height);
 	frameRate(20);
 	noStroke();
@@ -199,6 +200,18 @@ void keyPressed() {
 	}
 	else if (key=='0') {
 		frameCount = base;
+	}
+	else if (key=='a' || key=='A'){//manual start
+		displayMode = 0;
+		startTime = millis();
+		fill(0,255,0);
+		rect(0,h,width,MARGE);
+	}
+	else if (key=='z' || key=='Z'){//manual stop
+		displayMode = 1000;
+		startTime = millis();
+		fill(0,255,0);
+		rect(0,h,width,MARGE);
 	}
 	/*else{
 		try {

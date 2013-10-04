@@ -394,7 +394,7 @@ void updateGraphics(){
 		left.rect(0,0,pw,ph);
 		for (int i = 0; i<pw; i++){
 			for (int j = 0; j<ph; j++){
-				left.stroke(constrain((.75-noise(i/10.,j/10.,frameCount/base))*500,0,255));
+				left.stroke(constrain((.75-noise(i/10.,j/10.,frameCount/float(base)))*500,0,255));
 				left.point(i,j);
 			}
 		}
@@ -406,7 +406,7 @@ void updateGraphics(){
 		right.rect(0,0,pw,ph);
 		for (int i = 0; i<pw; i++){
 			for (int j = 0; j<ph; j++){
-				right.stroke(constrain((.75-noise(i/10.,j/10.,(1000-frameCount)/base))*500,0,255));
+				right.stroke(constrain((.75-noise(i/10.,j/10.,(1000-frameCount)/float(base)))*500,0,255));
 				right.point(i,j);
 			}
 		}
