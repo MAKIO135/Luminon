@@ -1,10 +1,10 @@
 /*
-	    __    __  ____  ________   ______  _   __
+		__	__  ____  ________   ______  _   __
 	   / /   / / / /  |/  /  _/ | / / __ \/ | / /
 	  / /   / / / / /|_/ // //  |/ / / / /  |/ / 
 	 / /___/ /_/ / /  / // // /|  / /_/ / /|  /  
 	/_____/\____/_/  /_/___/_/ |_/\____/_/ |_/   
-
+	
 	Touche [+]: displayMode suivant
 	Touche [-]: displayMode précédent
 	Touche [SPACE]: displayMode aléatoire
@@ -23,14 +23,15 @@ final int NB_PNX_WALL = 5;
 final int NB_LEDSTRIPS = 20;
 
 // Spatialisation son
-final int[] group1 = {0, 1, NB_PNX_WALL, NB_PNX_WALL+1};
-final int[] group2 = {1,2,3,6,7,8};
-final int[] group3 = {NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1};
+final int[] group1 = { 0, 1, NB_PNX_WALL, NB_PNX_WALL+1 };
+final int[] group2 = { 1,2,3,6,7,8 };
+final int[] group3 = { NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1 };
 
 // Beat Detection
 Minim minim;
 AudioInput in;
 BeatDetect beat;
+int startTime = 0;
 
 final int MARGE = 20;
 Panneau[] pnx;
@@ -40,6 +41,7 @@ int pw, ph;//PGraphics width / height
 
 void setup() {
 	size(300, 200);
+	// size(screen.width+1, screen.height);
 	frameRate(20);
 	noStroke();
 
@@ -100,12 +102,14 @@ void draw() {
 	}
 
 	sendOsc();
-	/*if(frameCount%1200 == 0){
+	if(second()%30 == 0 && once){
 		displayMode = int(random(nbModes));
 		println("displayMode: "+displayMode);
-	}*/
+		once=false;
+	}
+	if(second()%30==29) once= true;
 }
-
+boolean once = true;
 void sendOsc() {
 	for (int i=0, len=pnx.length; i<len; i++) {
 		OscMessage myMessage = new OscMessage("/Pano"+(i+1));
@@ -149,6 +153,16 @@ void sendOsc() {
 	OscMessage mess3 = new OscMessage("/group3");
 	mess3.add(average3);
 	oscP5.send(mess3, myRemoteLocation);
+}
+
+void oscEvent(OscMessage messageEntrant) {
+	println(messageEntrant.toString());
+	if (messageEntrant.addrPattern().equals("/track") == true) {
+		if (messageEntrant.typetag().equals("i") == true) {
+	// 		mouse_x = messageEntrant.get(0).intValue();
+	// 		mouse_y = messageEntrant.get(1).intValue();
+		}
+	}
 }
 
 void keyPressed() {

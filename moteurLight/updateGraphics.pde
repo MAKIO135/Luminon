@@ -1,5 +1,5 @@
-int displayMode = 16;
-int nbModes = 19;
+int displayMode = 19;
+int nbModes = 20;
 int base = 40; //rythme à augmenter ou ralentir
 
 void updateGraphics(){
@@ -346,6 +346,24 @@ void updateGraphics(){
 		left.rect(frameCount/5%pw,(frameCount/5+ph/2)%ph,1,3);
 		left.rect((pw-2-frameCount/5)%pw,frameCount/5%ph,1,3);
 		left.rect((pw-2-frameCount/5)%pw,(frameCount/5+ph/2)%ph,1,3);
+		left.endDraw();
+
+		right.beginDraw();
+		right.image(left,0,0);
+		right.endDraw();
+	}
+
+	else if(displayMode == 19){
+		left.beginDraw();
+		left.fill(0,30);
+		left.noStroke();
+		left.rect(0,0,pw,ph);
+		left.fill(255);
+		if(frameCount%base==0){
+			for (int i = 0; i<3; i++){
+				left.rect(int(random(pw)),0,1,ph);		
+			}
+		}
 		left.endDraw();
 
 		right.beginDraw();
