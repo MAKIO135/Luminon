@@ -10,6 +10,7 @@
 	Touche [SPACE]: displayMode aléatoire
 	Touche [a]: manual start
 	Touche [z]: manual stop
+	Touche [0]: reset frameCount
 */
 import oscP5.*;
 import netP5.*;
