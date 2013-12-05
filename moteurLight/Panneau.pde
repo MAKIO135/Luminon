@@ -23,7 +23,7 @@ class Panneau{
 	void update(){
 		for(int i=0; i<NB_LEDSTRIPS; i++){
 			led[i] = id<NB_PNX_WALL? left.get(id%NB_PNX_WALL,i) : right.get(id%NB_PNX_WALL,i);
-			led[i] = int(brightness(led[i]));
+			led[i] = int(constrain(brightness(led[i])*(isVolumeSensitive?vol/60.:1),0,255));
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*
-		__	__  ____  ________   ______  _   __
+	    __    __  ____  ________   ______  _   __
 	   / /   / / / /  |/  /  _/ | / / __ \/ | / /
 	  / /   / / / / /|_/ // //  |/ / / / /  |/ / 
 	 / /___/ /_/ / /  / // // /|  / /_/ / /|  /  
@@ -16,6 +16,10 @@ import oscP5.*;
 import netP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
+import controlP5.*;
+
+ControlP5 cp5;
+ControlWindow controlWindow;
 
 OscP5 oscP5;
 NetAddress myRemoteLocation;
@@ -26,18 +30,23 @@ final int NB_PNX_WALL = 5;
 final int NB_LEDSTRIPS = 20;
 
 // Spatialisation son
-final int[] group1 = { 0, 1, NB_PNX_WALL, NB_PNX_WALL+1 };
-final int[] group2 = { 1,2,3,6,7,8 };
-final int[] group3 = { NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1 };
+// La spatialisation sonore se calcule en fonction du niveau lumineux de groupes de panneaux
+final int[] group1 = { 0, 1, NB_PNX_WALL, NB_PNX_WALL+1 };//panneaux entrée -> 1ères enceintes
+final int[] group2 = { 1,2,3,6,7,8 };//panneaux milieu couloir -> enceintes centrales
+final int[] group3 = { NB_PNX_WALL-1, NB_PNX_WALL-2, NB_PNX_WALL*2-2, NB_PNX_WALL*2-1 };//panneaux sortie -> dernières enceintes
 // int moy1, moy2, moy3;
 // float easingMoySon = 0.1;
 
-// Beat Detection
+// Sound analysis
 Minim minim;
 AudioInput in;
 BeatDetect beat;
-int startTime = 0;
-int track = 1;
+int pBeat = 0;
+boolean isBeatSensitive = false;
+int delayBeat = 2000;
+float minVol = 9999, maxVol = -9999, vol;
+float level = 0;
+boolean isVolumeSensitive = false;
 
 final int MARGE = 20;
 Panneau[] pnx;
@@ -48,7 +57,7 @@ int pw, ph;//PGraphics width / height
 void setup() {
 	size(300, 200);
 	frame.setAlwaysOnTop(true);
-	// size(screen.width+1, screen.height);
+
 	frameRate(20);
 	noStroke();
 
@@ -74,18 +83,84 @@ void setup() {
 	// Beat Detection
 	minim = new Minim(this);
 	minim.debugOn();
-	// get a line in from Minim, default bit depth is 16
-	in = minim.getLineIn(Minim.STEREO, int(1024));
-	// a beat detection object song SOUND_ENERGY mode with a sensitivity of 10 milliseconds
+	in = minim.getLineIn(Minim.MONO, 1024);
 	beat = new BeatDetect();
-	beat.setSensitivity(2500);
-	// beat.detectMode(BeatDetect.FREQ_ENERGY);
+	beat.setSensitivity(1500);
+
+	//UI
+	cp5 = new ControlP5(this);
+	controlWindow = cp5.addControlWindow("controller", 100, 100, 300, 600)
+		.hideCoordinates()
+		.setBackground(color(40))
+		;
+	 cp5.addBang("bang")
+		.setPosition(100, 10)
+		.setSize(20, 20)
+		.moveTo(controlWindow)
+		;
+	cp5.addToggle("isBeatSensitive")
+		.setPosition(10,10)
+		.setSize(80,20)
+		.moveTo(controlWindow)
+		;
+	cp5.addSlider("delayBeat")
+		.setRange(0, 10000)
+		.setPosition(10, 50)
+		.setSize(200, 20)
+		.moveTo(controlWindow)
+		;
+	cp5.addSlider("beatSensitivity")
+		.setRange(0, 10000)
+		.setPosition(10, 90)
+		.setSize(200, 20)
+		.moveTo(controlWindow)
+		;
+
+	cp5.addToggle("isVolumeSensitive")
+		.setPosition(10,140)
+		.setSize(80,20)
+		.moveTo(controlWindow)
+		;
+	cp5.addSlider("VolumeSensibility")
+		.setRange(0, 100)
+		.setPosition(10, 180)
+		.setSize(200, 20)
+		.moveTo(controlWindow)
+		;
+
+	cp5.addToggle("randomDisplay")
+		.setPosition(10,230)
+		.setSize(80,20)
+		.moveTo(controlWindow)
+		;
+	 cp5.addBang("randomChange")
+		.setPosition(100, 230)
+		.setSize(20, 20)
+		.moveTo(controlWindow)
+		;
+	cp5.addSlider("delayDisplay")
+		.setRange(1000, 200000)
+		.setPosition(10, 270)
+		.setSize(200, 20)
+		.moveTo(controlWindow)
+		;
 }
 
 void draw() {
+	level = in.mix.level();
+	if(level>maxVol){
+		maxVol = level;
+		println("maxVol: "+maxVol);
+	}
+	else if(level<minVol){
+		minVol = level;
+		println("minVol: "+minVol);
+	}
+	vol = ease(vol,map(level,minVol,maxVol,0,100),0.1);
+
 	beat.detect(in.mix);
-	if ( beat.isOnset() ){
-		frameCount = 0;
+	if ( isBeatSensitive && beat.isOnset() && millis()-pBeat>delayBeat){
+		bang();
 	}
 
 	updateGraphics();
@@ -95,24 +170,30 @@ void draw() {
 
 	if(DEBUG){
 		background(0);
-		if ( beat.isOnset() ){
+
+		if ( beat.isOnset() && millis()-pBeat>delayBeat ){
 			fill(255,0,0);
 			rect(0,h,width,MARGE);
 		}
+
+		fill(130);
+		rect(0,0,width*vol/100.,height);
 		beat.drawGraph(this);
 		
 		for (int i=0, len=pnx.length; i<len; i++) {
 			noStroke();
 			pnx[i].draw();
 		}
-
 	}
 
 	sendOsc();
-	if(millis()-startTime > 100000){
-		displayMode = int(random(nbModes));
-		println("displayMode: "+displayMode);
-		startTime = millis();
+
+	// auto change mode after 100 seconds
+	if(randomDisplay && millis()-startTime > delayDisplay){
+		randomChange();
+	}
+	else{
+		timeline();
 	}
 }
 
@@ -167,14 +248,10 @@ void sendOsc() {
 void oscEvent(OscMessage messageEntrant) {
 	println(messageEntrant.toString());
 	if (messageEntrant.addrPattern().equals("/play") == true) {
-		displayMode = 0;
-		startTime = millis();
-		fill(0,255,0);
-		rect(0,h,width,MARGE);
-		// if (messageEntrant.typetag().equals("i") == true) {
-			// mouse_x = messageEntrant.get(0).intValue();
-			// mouse_y = messageEntrant.get(1).intValue();
-		// }
+		if (messageEntrant.typetag().equals("i") == true) {
+			track = messageEntrant.get(0).intValue();
+			trackStart = millis();
+		}
 	}
 	else if (messageEntrant.addrPattern().equals("/stop") == true) {
 		displayMode = 1000;
@@ -189,19 +266,18 @@ void oscEvent(OscMessage messageEntrant) {
 }
 
 void keyPressed() {
-	if(key == '+'){
+	if(keyCode == RIGHT){
 		displayMode++;
 		startTime = millis();
 		displayMode = constrain(displayMode, 0, nbModes);
 	}
-	else if(key == '-'){
+	else if(keyCode == LEFT){
 		displayMode--;
 		startTime = millis();
 		displayMode = constrain(displayMode, 0, nbModes);
 	}
 	else if (key == ' ') {
-		displayMode = int(random(nbModes));
-		startTime = millis();
+		randomChange();
 	}
 	else if (key=='d' || key =='D') {
 		DEBUG = !DEBUG;
@@ -221,21 +297,11 @@ void keyPressed() {
 		fill(0,255,0);
 		rect(0,h,width,MARGE);
 	}
-	/*else{
-		try {
-			String s = "";
-			s+=key;
-			// println("key: "+Integer.parseInt(s));
-			displayMode = Integer.parseInt(s);
-			for (int i=0, len=pnx.length; i<len; i++) {
-				pnx[i].initUpdate = true;
-			}
-		}
-		catch (Exception e) {
-			// println("e: "+e);
-			// println("key: "+int(key));
-		}
-	}*/
+
+	else if (key==',') cp5.window("controller").hide();
+	else if (key=='.') cp5.window("controller").show();
+	else if (key=='t') controlWindow.toggleUndecorated();
+
 	println("displayMode: "+displayMode);
 }
 
@@ -249,4 +315,20 @@ float ease(float variable,float target,float easingVal) {
 	float d = target - variable;
 	if(abs(d)>1) variable+= d*easingVal;
 	return variable;
+}
+
+void bang(){
+	frameCount = base;
+	pBeat = millis();
+}
+
+void randomChange(){
+	displayMode = int(random(nbModes));
+	frameCount = base;
+	startTime = millis();
+	println("displayMode: "+displayMode);
+}
+
+void beatSensitivity(int i){
+	beat.setSensitivity(i);
 }
