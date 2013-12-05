@@ -1,6 +1,6 @@
 int displayMode = 0;
 int nbModes = 20;
-int base = 44; //rythme à augmenter ou ralentir
+int base = 88; //rythme à augmenter ou ralentir
 
 void updateGraphics(){
 	// respiration background

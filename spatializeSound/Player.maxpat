@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 25.0, 83.0, 1370.0, 591.0 ],
+		"rect" : [ 13.0, 50.0, 1259.0, 591.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -37,7 +37,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1090.0, 934.0, 96.0, 20.0 ],
-					"presentation_rect" : [ 1100.0, 926.0, 0.0, 0.0 ],
 					"text" : "scale 0 -30 1. 0."
 				}
 
@@ -59,7 +58,6 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1100.0, 961.0, 253.0, 122.0 ],
 					"peakcolor" : [ 0.498039, 0.498039, 0.498039, 1.0 ],
-					"presentation_rect" : [ 1163.5, 960.0, 0.0, 0.0 ],
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 5
 				}
@@ -80,7 +78,6 @@
 					"outlettype" : [ "float", "bang" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 891.5, 549.0, 59.0, 23.0 ],
-					"presentation_rect" : [ 860.5, 568.0, 0.0, 0.0 ],
 					"triscale" : 0.9
 				}
 
@@ -372,7 +369,6 @@
 					}
 ,
 					"patching_rect" : [ 1024.0, 690.5, 63.0, 23.0 ],
-					"presentation_rect" : [ 1080.0, 463.0, 0.0, 0.0 ],
 					"saved_object_attributes" : 					{
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
@@ -641,7 +637,6 @@
 					}
 ,
 					"patching_rect" : [ 926.0, 692.0, 63.0, 23.0 ],
-					"presentation_rect" : [ 978.5, 468.0, 0.0, 0.0 ],
 					"saved_object_attributes" : 					{
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
@@ -1146,7 +1141,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 786.5, -20.0, 37.0, 18.0 ],
-					"presentation_rect" : [ 848.0, 69.0, 0.0, 0.0 ],
 					"text" : "/stop"
 				}
 
@@ -3715,12 +3709,12 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-34" : [ "live.gain~[5]", "live.gain~", 0 ],
-			"obj-16" : [ "live.gain~[1]", "live.gain~", 0 ],
 			"obj-19" : [ "live.gain~[4]", "live.gain~", 0 ],
+			"obj-5" : [ "live.gain~", "live.gain~", 0 ],
+			"obj-16" : [ "live.gain~[1]", "live.gain~", 0 ],
 			"obj-17" : [ "live.gain~[2]", "live.gain~", 0 ],
 			"obj-18" : [ "live.gain~[3]", "live.gain~", 0 ],
-			"obj-5" : [ "live.gain~", "live.gain~", 0 ]
+			"obj-34" : [ "live.gain~[5]", "live.gain~", 0 ]
 		}
 ,
 		"dependency_cache" : [ 			{
