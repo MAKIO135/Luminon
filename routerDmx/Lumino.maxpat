@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 0.0, 38.0, 1366.0, 656.0 ],
+		"rect" : [ 7.0, 55.0, 1359.0, 621.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -1070,7 +1070,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 531.25, 123.25, 32.5, 18.0 ],
-					"text" : "250"
+					"text" : "101"
 				}
 
 			}
@@ -4267,7 +4267,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 416.0, 194.5, 60.0, 15.0 ],
+									"patching_rect" : [ 417.0, 194.5, 59.0, 15.0 ],
 									"text" : "open COM3"
 								}
 
