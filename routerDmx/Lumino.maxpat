@@ -3,9 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 6,
-			"minor" : 1,
-			"revision" : 3,
-			"architecture" : "x86"
+			"minor" : 0,
+			"revision" : 7
 		}
 ,
 		"rect" : [ 7.0, 55.0, 1359.0, 621.0 ],
@@ -296,9 +295,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 6,
-							"minor" : 1,
-							"revision" : 3,
-							"architecture" : "x86"
+							"minor" : 0,
+							"revision" : 7
 						}
 ,
 						"rect" : [ 34.0, 88.0, 967.0, 719.0 ],
@@ -1976,9 +1974,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 6,
-							"minor" : 1,
-							"revision" : 3,
-							"architecture" : "x86"
+							"minor" : 0,
+							"revision" : 7
 						}
 ,
 						"rect" : [ 59.0, 126.0, 1441.0, 688.0 ],
@@ -3934,9 +3931,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 6,
-							"minor" : 1,
-							"revision" : 3,
-							"architecture" : "x86"
+							"minor" : 0,
+							"revision" : 7
 						}
 ,
 						"rect" : [ 34.0, 88.0, 640.0, 480.0 ],
@@ -5928,15 +5924,15 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "Borne.maxpat",
-				"bootpath" : "/Users/Mi/Documents/GitHub/Luminon/routerDmx",
-				"patcherrelativepath" : ".",
+				"bootpath" : "\\Users\\megam_000\\Documents\\GitHub\\Luminon\\routerDmx",
+				"patcherrelativepath" : "",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "Carte.maxpat",
-				"bootpath" : "/Users/Mi/Documents/GitHub/Luminon/routerDmx",
-				"patcherrelativepath" : ".",
+				"bootpath" : "\\Users\\megam_000\\Documents\\GitHub\\Luminon\\routerDmx",
+				"patcherrelativepath" : "",
 				"type" : "JSON",
 				"implicit" : 1
 			}
